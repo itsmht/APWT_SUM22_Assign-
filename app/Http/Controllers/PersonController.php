@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Type;
+use App\Models\Person;
+use Illuminate\Http\Request;
 use Validator;
 use Auth;
-use Illuminate\Http\Request;
 
-class UserController extends Controller
+class PersonController extends Controller
 {
     function login()
     {
@@ -22,7 +22,7 @@ class UserController extends Controller
     }
     function ud(Request $req)
     {
-        $users = Type::all();
+        $users = Person::all();
        
         return view('users.userdashboard')
                 ->with('users',$users);
@@ -31,14 +31,18 @@ class UserController extends Controller
     }
     function ad()
     {
-        $users = Type::all();
+        $users = Person::all();
        
         return view('users.admindashboard')
                 ->with('users',$users);
     }
-    function details()
+    function details(Request $req)
     {
-
+        $users = Person::where('id', '=', $req->id)
+                                ->select('id','name','email','type')
+                                ->first();
+        return view('users.details')
+                    ->with('users', $users);
     }
     function regSubmit(Request $req)
     {
@@ -66,12 +70,12 @@ class UserController extends Controller
                         ]
                         );
                         
-                        $u1 = new Type();
-                        $u1->name = $req->name;
-                        $u1->email = $req->email;
-                        $u1->password = $req->password;
-                        $u1->type = $req->type;
-                        $u1->save();
+                        $p1 = new Person();
+                        $p1->name = $req->name;
+                        $p1->email = $req->email;
+                        $p1->password = $req->password;
+                        $p1->type = $req->type;
+                        $p1->save();
                         return redirect('users.login');
     }
     function loginSubmit(Request $req)
@@ -82,25 +86,19 @@ class UserController extends Controller
                             "password"=>"required"
                         ]
                         );
-        $user_data = array(
-                            'email'  => $req->get('email'),
-                            'password' => $req->get('password'),
-                            'type'=>$req->get('type')
-                           );
-                           if(Auth::attempt($user_data))
-                           {
-                               if($req->get('type')==='user')
-                               {
-                                   return redirect('users.userdashboard');
-                               }
-                               else{
-                                   return redirect('users.admindashboard');
-                               }
-                            
-                           }
-                           else
-                           {
-                            return back()->with('error', 'Wrong Login Details');
-                           }
+        $users = Person::where('email',$req->email)->where('password',$req->password)->first();
+        if($req->email==$users->email && $req->password==$users->password)
+        {
+            if($users->type=='user')
+            {
+                
+                return redirect('users.userdashboard');
+            }
+            else
+            {
+                
+                return redirect('users.admindashboard');
+            }
     }
+}
 }

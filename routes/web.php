@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\PersonController;
+use App\Models\Person;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,12 +15,12 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', [UserController::class, 'welcome'])->name('users.welcome');
-Route::get('/users.reg',[UserController::class, 'reg'])->name('users.reg');
-Route::post('/users.reg',[UserController::class, 'regSubmit'])->name('users.reg.submit');
-Route::get('/users.login',[UserController::class, 'login'])->name('users.login');
-Route::post('/users.login',[UserController::class, 'loginSubmit'])->name('users.login.submit');
-Route::get('/users.userdashboard',[UserController::class, 'ud'])->name('users.userdashboard');
-Route::get('/users.admindashboard',[UserController::class, 'ad'])->name('users.admindashboard');
-Route::get('/users.details/{id}', [UserController::class, 'details'])->name('users.details');
+Route::get('/', [PersonController::class, 'welcome'])->name('users.welcome');
+Route::get('/users.reg',[PersonController::class, 'reg'])->name('users.reg');
+Route::post('/users.reg',[PersonController::class, 'regSubmit'])->name('users.reg.submit');
+Route::get('/users.login',[PersonController::class, 'login'])->name('users.login');
+Route::post('/users.login',[PersonController::class, 'loginSubmit'])->name('users.login.submit');
+Route::get('/users.userdashboard',[PersonController::class, 'ud'])->name('users.userdashboard');
+Route::get('/users.admindashboard',[PersonController::class, 'ad'])->name('users.admindashboard');
+Route::get('/users.details/{id}', [PersonController::class, 'details'])->name('users.details');
 

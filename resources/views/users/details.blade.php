@@ -3,5 +3,6 @@
 <h1> User Details</h1>
 Id: {{$users->id}}</br>
 Name:  {{$users->name}}</br>
-Email: {{$students->email}}</br>
+Email: {{$users->email}}</br>
+Type: {{$users->type}}</br>
 @endsection
